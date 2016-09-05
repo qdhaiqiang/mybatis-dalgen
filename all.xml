@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="atom-dalgen" default="release" basedir=".">
+	<!-- define properties -->
+	<property name="name" value="atom-dalgen" />
+
+	<property environment="env" />
+	<loadproperties srcFile="system-config.properties" />
+
+	<!-- properties for directory -->
+	<property name="dir.target" value="${basedir}/target" />
+	<property name="dir.deploy" value="${target.project.path}/../${target.base.dao.dir}/src/main" />
+
+	<!-- properties for middlegen plugin -->
+	<property name="middlegen.templates" value="${basedir}/templates" />
+	<property name="middlegen.destination" value="${dir.deploy}" />
+	<property name="middlegen.config.file" value="${basedir}/tables-config.xml" />
+	<property name="middlegen.package" value="${target.middlegen.package}" />
+	<property name="middlegen.package.dir" value="${target.middlegen.package.dir}" />
+
+	<!-- insert database configuration here -->
+	<property name="database.driver" value="com.mysql.jdbc.Driver" />
+
+	<!-- =================================================================== -->
+	<!-- Run Middlegen                                                       -->
+	<!-- =================================================================== -->
+	<target name="middlegen">
+		<taskdef name="middlegen" classname="middlegen.MiddlegenTask" classpath="${classpath.main}" />
+		<echo message="" />
+		<input message="请输入目标表名,多表以逗号分隔,全表生成请输入'*': " addproperty="tabs" />
+
+		<echo message="DAL配置文件：${middlegen.config.file}." />
+		<echo message="开始自动生成DAL..." />
+
+		<mkdir dir="${middlegen.destination}" />
+		<middlegen configfile="${middlegen.config.file}" tabs="${tabs}" prefsdir="${dir.target}">
+			<iwallet destination="" mergedir="${middlegen.templates}/mergedir" package="${middlegen.package}">
+				<!-- 为每一个表生成一个DTO-->
+				<fileproducer destination="${middlegen.destination}/java/${middlegen.package.dir}" template="${middlegen.templates}/do.vm" filename="model/{0}DO.java" />
+
+				<!-- 为每一个表生成一个DAO -->
+				<fileproducer destination="${middlegen.destination}/java/${middlegen.package.dir}" template="${middlegen.templates}/dao.vm" filename="dao/{0}DAO.java" />
+
+				<!-- 为每一个表生成DAO的实现-->
+				<fileproducer destination="${middlegen.destination}/java/${middlegen.package.dir}" template="${middlegen.templates}/daoImpl.vm" filename="dao/impl/{0}DAOImpl.java" />
+
+				<!-- 生成sqlMap-mapping -->
+				<fileproducer destination="${middlegen.destination}/resources" template="${middlegen.templates}/table-sqlmap-mapping.vm" filename="mybatis/sqlmap/auto/mapping/{0}-sqlmap.xml" />
+
+				<!--生成sqlMap -->
+				<fileproducer destination="${middlegen.destination}/resources" template="${middlegen.templates}/sqlmap.vm" filename="mybatis/auto/sqlMapConfig.xml" />
+
+				<!-- 生成DAO beans的Spring配置文件 -->
+				<fileproducer destination="${middlegen.destination}/resources" template="${middlegen.templates}/beans-dal-dao.vm" filename="bean/auto/${app.name}-auto-dao-bean.xml" />
+			</iwallet>
+		</middlegen>
+		<echo message="DAL生成已成功!" />
+	</target>
+
+	<target name="clean-perf" depends="" description="">
+		<delete dir="${dir.target}/*.properties" />
+	</target>
+
+	<target name="clean" depends="clean-perf" description="clean all generated stuff" />
+
+	<!-- The default target to use -->
+	<target name="release" depends="clean,middlegen" description="" />
+</project>

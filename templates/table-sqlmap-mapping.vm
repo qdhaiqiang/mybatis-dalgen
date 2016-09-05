@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ==========================================================  -->
+<!-- Configuration for ibatis sqlmap mapping.                    -->
+<!-- ==========================================================  -->
+
+#parse("description-xml.vm")
+
+<mapper namespace="${table.baseClassName}">
+    <!-- ============================================= -->
+    <!-- RESULT MAPS                                   -->
+    <!-- ============================================= -->
+
+
+##generate all other resultmaps
+    <!-- result maps for database table ${table.sqlName} -->
+#foreach ($resultMap in ${table.resultMaps})
+    <resultMap id="${resultMap.idAttr}" type="${resultMap.classAttr}">
+#foreach ($result in ${resultMap.results})
+        <result property="${result.property}" column="${result.column}" javaType="${result.javaType}" #if (${result.jdbcType}=='INT') jdbcType="INTEGER" #elseif (${result.jdbcType}=='TEXT') jdbcType="CLOB" #elseif (${result.jdbcType}=='INT UNSIGNED') jdbcType="INTEGER" #elseif (${result.jdbcType}=='DATETIME') jdbcType="DATE"  #else  jdbcType="${result.jdbcType}" #end #if (${result.hasNullValue}) nullValue="${result.nullValue}"#end/>
+#end
+    </resultMap>
+
+#end
+#foreach ($sql in ${table.sqls})
+	<sql id="${sql.id}">
+#if(${sql.escape})
+	<![CDATA[
+		${sql.sql}
+	]]>
+#else
+		${sql.sql}
+#end
+	</sql>
+
+#end
+##generate all statemetns
+    <!-- ============================================= -->
+    <!-- mapped statements for ${table.ibatisClassName} -->
+    <!-- ============================================= -->
+#foreach ($operation in ${table.operations})
+    <!-- mapped statement for ${table.ibatisClassName}.${operation.name} -->
+#if (${operation.mappedStatementType} == "insert")
+	<insert id="${operation.mappedStatementId}">
+#if (${operation.hasSqlmap})
+	$operation.mappedStatementSql
+#else
+	$operation.mappedStatementSql
+#end
+#if (${table.pkColumn})
+    <selectKey resultType="${table.pkColumn.javaType}" order="AFTER" keyProperty="${table.pkColumn.variableName}">
+		SELECT LAST_INSERT_ID()
+    </selectKey>
+#end
+	</insert>
+
+#elseif (${operation.mappedStatementType} == "select")
+#if (${operation.paging})
+    <select id="${operation.mappedStatementId}" ${operation.mappedStatementResult.replace("resultClass","resultType")}>
+#if (${operation.hasSqlmap})
+        $operation.mappedStatementSql
+#else
+    <![CDATA[
+        $operation.mappedStatementSqlForPaging
+    ]]>
+#end
+    </select>
+
+## an additional select count(*) statement for paging
+    <!-- mapped statement for ${table.ibatisClassName}.${operation.name}, needed by paging -->
+    <select id="${operation.mappedStatementIdForCount}" ${operation.mappedStatementResultForCount.replace("resultClass","resultType")}>
+#if (${operation.hasSqlmap})
+        $operation.mappedStatementSqlForCount
+#else
+    <![CDATA[
+        $operation.mappedStatementSqlForCount
+    ]]>
+#end
+    </select>
+
+#else
+    <select id="${operation.mappedStatementId}" ${operation.mappedStatementResult.replace("resultClass","resultType")}>
+#if (${operation.hasSqlmap})
+        $operation.mappedStatementSql
+#else
+    <![CDATA[
+        $operation.mappedStatementSql
+    ]]>
+#end
+    </select>
+
+#end
+#else
+    <${operation.mappedStatementType} id="${operation.mappedStatementId}">
+#if (${operation.hasSqlmap})
+        $operation.mappedStatementSql
+#else
+    <![CDATA[
+        $operation.mappedStatementSql
+    ]]>
+#end
+    </${operation.mappedStatementType}>
+
+#end
+#end
+</mapper>

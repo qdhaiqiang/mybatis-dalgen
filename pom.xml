@@ -1,0 +1,139 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>com.lizhy.dalgen</artifactId>
+	<groupId>dalgen</groupId>
+	<version>1.0</version>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<configuration>
+							<target>
+								<property name="classpath.main" refid="maven.plugin.classpath" />
+								<ant antfile="all.xml" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+						<version>1.2.16</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-dbcp</groupId>
+						<artifactId>commons-dbcp</artifactId>
+						<version>1.4</version>
+					</dependency>
+					<dependency>
+						<groupId>commons-io</groupId>
+						<artifactId>commons-io</artifactId>
+						<version>2.4</version>
+					</dependency>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+						<version>1.6.6</version>
+					</dependency>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-simple</artifactId>
+						<version>1.6.6</version>
+					</dependency>
+					<dependency>
+						<groupId>com.yunzongnet.dalgen</groupId>
+						<artifactId>ibatis-dalgen</artifactId>
+						<version>1.0.1</version>
+					</dependency>
+
+					<dependency>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+						<version>2.1</version>
+					</dependency>
+
+					<dependency>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+						<version>3.2.1</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant</artifactId>
+						<version>1.9.4</version>
+					</dependency>
+
+					<dependency>
+						<groupId>commons-lang</groupId>
+						<artifactId>commons-lang</artifactId>
+						<version>2.6</version>
+					</dependency>
+
+					<dependency>
+						<groupId>zql</groupId>
+						<artifactId>zql</artifactId>
+						<version>1.0</version>
+					</dependency>
+
+					<dependency>
+						<groupId>velocity</groupId>
+						<artifactId>velocity</artifactId>
+						<version>1.5</version>
+					</dependency>
+
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.31</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>central</id>
+					<url>http://10.100.21.13:8081/nexus/content/repositories/releases</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>snapshots</id>
+					<url>http://10.100.21.13:8081/nexus/content/repositories/snapshots</url>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>central</id>
+					<url>http://10.100.21.13:8081/nexus/content/groups/public</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+</project>
