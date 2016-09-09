@@ -6,8 +6,9 @@
 <!-- ==========================================================  -->
 
 #parse("description-xml.vm")
+<!-- <mapper namespace="${table.baseClassName}"> -->
+<mapper namespace="${table.DAOPackage}">
 
-<mapper namespace="${table.baseClassName}">
     <!-- ============================================= -->
     <!-- RESULT MAPS                                   -->
     <!-- ============================================= -->
