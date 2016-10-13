@@ -136,8 +136,8 @@
 						<enabled>false</enabled>
 					</snapshots>
 				</pluginRepository>
-			</pluginRepositories>
 			-->
+			</pluginRepositories>
 		</profile>
 	</profiles>
 </project>
