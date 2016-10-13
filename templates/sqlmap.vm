@@ -9,7 +9,7 @@
 
 	<typeAliases>
 #foreach ($table in $plugin.sortedTables) 
-		<typeAlias alias="${table.baseClassName}DO" type="com.yunzong.panda.auto.model.${table.baseClassName}DO"/>
+		<typeAlias alias="${table.baseClassName}DO" type="${table.package}.model.${table.baseClassName}DO"/>
 #end 	
 	</typeAliases>
 	<mappers>

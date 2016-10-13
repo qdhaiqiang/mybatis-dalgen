@@ -110,6 +110,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<repositories>
+				<!-- 
 				<repository>
 					<id>central</id>
 					<url>http://10.100.21.13:8081/nexus/content/repositories/releases</url>
@@ -124,8 +125,10 @@
 						<enabled>false</enabled>
 					</releases>
 				</repository>
+				-->
 			</repositories>
 			<pluginRepositories>
+			<!-- 
 				<pluginRepository>
 					<id>central</id>
 					<url>http://10.100.21.13:8081/nexus/content/groups/public</url>
@@ -134,6 +137,7 @@
 					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
+			-->
 		</profile>
 	</profiles>
 </project>
