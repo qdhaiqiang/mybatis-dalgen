@@ -20,7 +20,7 @@ import $importClass;
  */
 public class ${table.ibatisClassName} extends $base implements ${table.DAOClassName} {
 
-	private static final String namespace="${table.baseClassName}.";
+	private static final String namespace="${table.DAOPackage}.";
 #set ($tempName = "daoImpl")
 #foreach($operation in $table.operations)
 #parse("operation/op-${operation.templateSuffix}.vm") #parse("operation/opbody-${operation.templateSuffix}.vm")
