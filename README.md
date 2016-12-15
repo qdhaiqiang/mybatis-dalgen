@@ -12,77 +12,41 @@
    使用自动生成有很多方式，可以在eclipse中安装插件，但是以下将要介绍的这种方式我认为很轻松，最简单，不需要装插件，只需要下几个jar包即可，把它们放在一个目录下面。
    其中的generatorConfig.xml是需要我们来配置的文件，配置如下：
 <code>
-01
 <?xml version="1.0" encoding="UTF-8"?>  
-02
 <!DOCTYPE generatorConfiguration  
-03
   PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
-04
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
-05
 <generatorConfiguration>  
-06
 <!-- 数据库驱动-->  
-07
     <classPathEntry  location="mysql-connector-java-5.1.25-bin.jar"/>  
-08
     <context id="DB2Tables"  targetRuntime="MyBatis3">  
-09
         <commentGenerator>  
-10
             <property name="suppressDate" value="true"/>  
-11
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
-12
             <property name="suppressAllComments" value="true"/>  
-13
         </commentGenerator>  
-14
         <!--数据库链接URL，用户名、密码 -->  
-15
         <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.100:3306/XMAN" userId="root" password="yunji123">  
-16
         </jdbcConnection>  
-17
         <javaTypeResolver>  
-18
             <property name="forceBigDecimals" value="false"/>  
-19
         </javaTypeResolver>  
-20
         <!-- 生成模型的包名和位置-->  
-21
         <javaModelGenerator targetPackage="mybatis.pojo" targetProject="src">  
-22
             <property name="enableSubPackages" value="true"/>  
-23
             <property name="trimStrings" value="true"/>  
-24
         </javaModelGenerator>  
-25
         <!-- 生成映射文件的包名和位置-->  
-26
         <sqlMapGenerator targetPackage="mybatis.mapping" targetProject="src">  
-27
-            <property name="enableSubPackages" value="true"/>  
-28
+            <roperty name="enableSubPackages" value="true"/>  
         </sqlMapGenerator>  
-29
         <!-- 生成DAO的包名和位置-->  
-30
         <javaClientGenerator type="XMLMAPPER" targetPackage="mybatis.dao" targetProject="src">  
-31
             <property name="enableSubPackages" value="true"/>  
-32
         </javaClientGenerator>  
-33
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->  
-34
         <table tableName="tb_config" domainObjectName="Config" enableCountByExample="false"enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-35
     </context>  
-36
 </generatorConfiguration>
 </code>
 当以上这些完成之后，只需要打开控制台，进入lib目录下，执行脚本：
