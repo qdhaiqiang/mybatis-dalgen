@@ -53,6 +53,7 @@
 
 [shengke@localhost lib]$ Java -jar mybatis-generator-core-1.3.2.jar -configfile generatorConfig.xml -overwrite
 
-运行截图如下：
+指导博客请参考：http://www.thinksaas.cn/kaiyuan/ruanjian/11/
+
 ##注意
   本工程项目生成结构依赖于domaindemo项目结构
